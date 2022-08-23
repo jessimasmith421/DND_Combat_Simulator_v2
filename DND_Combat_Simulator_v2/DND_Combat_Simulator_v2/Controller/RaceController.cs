@@ -25,5 +25,17 @@ namespace DND_Combat_Simulator_v2.Controller
             }
             return Ok(race);
         }
+
+        [HttpGet()]
+        public ActionResult getRaces()
+        {
+            List<Race> races = raceDAO.GetRaces();
+            if (races ==null)
+            {
+                return NotFound();
+            }
+            return Ok(races);
+        }
+
     }
 }

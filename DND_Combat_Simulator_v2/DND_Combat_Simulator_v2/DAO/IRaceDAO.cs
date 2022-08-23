@@ -6,5 +6,6 @@ namespace DND_Combat_Simulator_v2.DAO
     public interface IRaceDAO
     {
         Race GetRaceById(int id);
+        List<Race> GetRaces();
     }
 }

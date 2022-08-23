@@ -5,13 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-  },
-  getters: {
+    races:[]
   },
   mutations: {
+    GET_RACES(state, array){
+      state.races = array;
+    }
   },
-  actions: {
-  },
-  modules: {
-  }
+
+
+  // getters: {
+  // },
+  // actions: {
+  // },
+  // modules: {
+  // }
 })

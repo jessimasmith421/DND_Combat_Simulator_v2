@@ -1,6 +1,7 @@
 ﻿using DND_Combat_Simulator_v2.Models;
 using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace DND_Combat_Simulator_v2.DAO
 {
@@ -30,6 +31,29 @@ namespace DND_Combat_Simulator_v2.DAO
             }
             return race;
         }
+        public List<Race> GetRaces()
+        {
+            List<Race> races = new List<Race>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT id,race,strength_bonus,dexterity_bonus,constitution_bonus,intelligence_bonus,wisdom_bonus,charisma_bonus,size,speed,traits " +
+                    "FROM Races";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.HasRows && reader.Read())
+                {
+                    Race race = GetRaceFromDataReader(reader);
+
+                    races.Add(race);
+                }
+
+            }
+            return races;
+
+        }
 
         private static Race GetRaceFromDataReader(SqlDataReader reader)
         {
@@ -50,5 +74,6 @@ namespace DND_Combat_Simulator_v2.DAO
 
             };
         }
+
     }
 }
