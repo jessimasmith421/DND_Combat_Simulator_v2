@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="race in races" v-bind:key="race.id" class='races'>
-    <router-link v-bind:to="{name:'RacesDetails', params: {id: race.id}}"> 
-    <h2>{{race.raceType}}</h2>
+    <div v-for="weapon in weapons" v-bind:key="weapon.id" class='weapons'>
+    <router-link v-bind:to="{name:'WeaponsDetails', params: {id: weapon.id}}"> 
+    <h2>{{weapon.weaponType}}</h2>
     </router-link>
     </div>
   </div>
@@ -15,28 +15,28 @@ export default {
   // components: { RacesDetails },
   data() {
     return {
-      races: [],
+      weapons: [],
     };
   },
   methods: {
-    getRaces() {
-      DNDService.getRaces()
+    getWeapons() {
+      DNDService.getWeapons()
       .then(response => {
         let list = response.data;
-        this.$store.commit('GET_RACES', response.data);
-        this.races = list;
+        this.$store.commit('GET_WEAPONS', response.data);
+        this.weapons = list;
         
       });
     },
 },
     created() {
-        this.getRaces();
+        this.getWeapons();
     }
 }
 </script>
 
 <style>
-.races {
+.weapons {
     border: 2px solid black;
 }
 

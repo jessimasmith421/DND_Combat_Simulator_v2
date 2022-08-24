@@ -31,7 +31,7 @@ namespace DND_Combat_Simulator_v2.DAO
             }
             return race;
         }
-        public List<Race> GetRaces()
+        public List<Race> GetAllRaces()
         {
             List<Race> races = new List<Race>();
             using (SqlConnection conn = new SqlConnection(connectionString))

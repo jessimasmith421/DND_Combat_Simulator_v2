@@ -6,9 +6,15 @@ const http = axios.create({
 
 export default{
     getRaceById(id){
-        return http.get(`/races/${id}`);
+        return http.get('/races/' + id);
     },
     getRaces() {
         return http.get('/races/');
-    }
+    },
+    getWeaponById(id){
+        return http.get('/weapons/' + id);
+    },
+    getWeapons() {
+        return http.get('/weapons/');
+    },
 }

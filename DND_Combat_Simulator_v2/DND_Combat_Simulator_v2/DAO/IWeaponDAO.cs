@@ -1,11 +1,12 @@
 ﻿using DND_Combat_Simulator_v2.Models;
 using System.Collections.Generic;
 
+
 namespace DND_Combat_Simulator_v2.DAO
 {
-    public interface IRaceDAO
+    public interface IWeaponDAO
     {
-        Race GetRaceById(int id);
-        List<Race> GetAllRaces();
+        Weapon GetWeaponById(int id);
+        List<Weapon> GetAllWeapons();
     }
 }

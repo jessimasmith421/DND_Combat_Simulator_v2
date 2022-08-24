@@ -29,7 +29,7 @@ namespace DND_Combat_Simulator_v2.Controller
         [HttpGet()]
         public ActionResult getRaces()
         {
-            List<Race> races = raceDAO.GetRaces();
+            List<Race> races = raceDAO.GetAllRaces();
             if (races ==null)
             {
                 return NotFound();
