@@ -48,7 +48,8 @@ namespace DND_Combat_Simulator_v2
             string connectionString = Configuration.GetConnectionString("Project");
             services.AddTransient<IRaceDAO>(sp => new RaceDAO(connectionString));
             services.AddTransient<IWeaponDAO>(sp => new WeaponDAO(connectionString));
-  
+            services.AddTransient<ICharacterDAO>(sp => new CharacterDAO(connectionString));
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

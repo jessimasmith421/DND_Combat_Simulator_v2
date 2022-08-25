@@ -6,7 +6,7 @@
 </template>
 
 <script>
-//import DNDService from '../services/DnDService.js'
+import DNDService from '../services/DnDService.js'
 
 export default {
   name:"WeaponsDetails",
@@ -21,12 +21,15 @@ export default {
         let id = this.$route.params.id;
         this.weapon = this.$store.state.weapons.find(r => r.id == id)
         
-        // This below also works, but doing it the above way makes it so that the website doesn't have to make another call to the API
-        // DNDService.getRaceById(id)
-        //   .then(response => {
-        //     this.race = response.data;
+        // EDIT: Now it will only make a call to the API if the character is still null after page creation.
+    //       For some reason, the above stuff doesn't happen fast enough if you reload on a details page.
+    //          OLD NOTE: This below also works, but doing it the above way makes it so that the website doesn't have to make another call to the API
 
-        //   })
+    if (this.weapon == null) {
+      DNDService.getWeaponById(id).then((response) => {
+        this.weapon = response.data;
+      });
+    }
 
     }
 }

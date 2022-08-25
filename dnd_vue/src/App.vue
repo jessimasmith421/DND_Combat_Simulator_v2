@@ -3,11 +3,40 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/races">Races</router-link> |
-      <router-link to="/weapons">Weapons</router-link>
+      <router-link to="/weapons">Weapons</router-link> |
+      <router-link to="/characters">Characters</router-link>
     </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+import DNDService from './services/DnDService.js'
+
+export default {
+  setup() {
+    
+  },
+  created() {
+    DNDService.getRaces()
+      .then(response=>{
+        let racesList = response.data;
+        this.$store.commit('GET_RACES', racesList);
+      } );
+      DNDService.getWeapons()
+        .then(response =>{
+          let weaponsList = response.data;
+          this.$store.commit('GET_WEAPONS',weaponsList);
+        })
+      DNDService.getCharacters()
+      .then(response => {
+        let charactersList = response.data;
+        this.$store.commit('GET_CHARACTERS', charactersList)
+      });
+  }
+}
+</script>
+
 
 <style>
 #app {

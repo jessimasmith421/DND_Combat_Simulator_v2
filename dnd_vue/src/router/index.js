@@ -5,6 +5,8 @@ import RacesView from '../views/RacesView.vue'
 import RacesDetails from '../components/RacesDetails.vue'
 import WeaponsView from '../views/WeaponsView.vue'
 import WeaponsDetails from '../components/WeaponsDetails.vue'
+import CharactersView from '../views/CharactersView.vue'
+import CharactersDetails from '../components/CharactersDetails.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +36,16 @@ const routes = [
     name: 'WeaponsDetails',
     component: WeaponsDetails,
   },
+  {
+    path: '/characters/',
+    name: 'characters',
+    component: CharactersView,
+  },
+  {
+    path: '/characters/:id',
+    name: 'CharactersDetails',
+    component: CharactersDetails,
+  }
 ]
 
 const router = new VueRouter({
