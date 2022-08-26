@@ -10,5 +10,7 @@ namespace DND_Combat_Simulator_v2.DAO
     {
         Character GetCharacterById(int id);
         List<Character> GetAllCharacters();
+
+        Character AddNewCharacter(Character newChar);
     }
 }

@@ -35,5 +35,16 @@ namespace DND_Combat_Simulator_v2.Controller
             }
             return Ok(characters);
         }
+
+        [HttpPost()]
+        public ActionResult AddCharacter(Character newChar)
+        {
+            newChar = characterDAO.AddNewCharacter(newChar);
+            if (newChar == null)
+            {
+                return BadRequest();
+            }
+            return Created("/characters/" + newChar.Id, newChar);
+        }
     }
 }

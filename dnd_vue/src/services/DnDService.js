@@ -26,4 +26,9 @@ export default{
     getCharacters() {
         return http.get('/characters/');
     },
+
+    // with the adding characters method, I will need to make sure the character.race and character.weapon fields are OBJECTS, so I may need to do a find on the array or another get or something
+    addNewCharacter(newChar) {
+        return http.post('/characters/', newChar)
+    }
 }

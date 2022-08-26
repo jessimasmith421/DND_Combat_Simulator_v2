@@ -58,6 +58,30 @@ namespace DND_Combat_Simulator_v2.DAO
             return characters;
         }
 
+        public Character AddNewCharacter(Character newChar)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "INSERT INTO Characters(name, race, strength,dexterity,constitution,intelligence,wisdom,charisma,weapon) " +
+                    "VALUES (@name, @race,@str,@dex,@con,@int,@wis,@cha,@weapon); " +
+                    "SELECT @@IDENTITY";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@name", newChar.Name);
+                cmd.Parameters.AddWithValue("@race", newChar.Race.Id);
+                cmd.Parameters.AddWithValue("@str", newChar.Strength);
+                cmd.Parameters.AddWithValue("@dex", newChar.Dexterity);
+                cmd.Parameters.AddWithValue("@con", newChar.Constitution);
+                cmd.Parameters.AddWithValue("@int", newChar.Intelligence);
+                cmd.Parameters.AddWithValue("@wis", newChar.Wisdom);
+                cmd.Parameters.AddWithValue("@cha", newChar.Charisma);
+                cmd.Parameters.AddWithValue("@weapon", newChar.Weapon.Id);
+                int id = Convert.ToInt32(cmd.ExecuteScalar());
+                newChar.Id = id;
+            }
+            return newChar;
+        }
+
         private Character GetCharacterFromDataReader(SqlDataReader reader)
         {
             Character newChar = new Character();

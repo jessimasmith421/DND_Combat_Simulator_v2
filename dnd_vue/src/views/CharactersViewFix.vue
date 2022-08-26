@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div
-      v-for="character in characters"
-      v-bind:key="character.id" 
-      class="characters"
-    >
+    <new-character />
+    <div v-for="character in characters" v-bind:key="character.id" class="characters">
       <router-link
         v-bind:to="{ name: 'CharactersDetails', params: { id: character.id } }"
       >
@@ -16,8 +13,12 @@
 
 <script>
 import DNDService from "../services/DnDService.js"
-//import characterDetails from '../components/CharactersDetails'
+import NewCharacter from "../components/NewCharacter.vue"
 export default {
+  name: 'CharactersView',
+  components:{
+    NewCharacter
+  },
   data() {
     return {
       characters: [],

@@ -18,6 +18,9 @@ export default new Vuex.Store({
     },
     GET_CHARACTERS(state,array){
       state.characters=array;
+    },
+    ADD_CHARACTER(state, newChar){
+      state.characters.push(newChar);
     }
   },
 

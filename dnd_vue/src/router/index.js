@@ -5,7 +5,7 @@ import RacesView from '../views/RacesView.vue'
 import RacesDetails from '../components/RacesDetails.vue'
 import WeaponsView from '../views/WeaponsView.vue'
 import WeaponsDetails from '../components/WeaponsDetails.vue'
-import CharactersView from '../views/CharactersView.vue'
+import CharactersView from '../views/CharactersViewFix.vue'
 import CharactersDetails from '../components/CharactersDetails.vue'
 
 Vue.use(VueRouter)
