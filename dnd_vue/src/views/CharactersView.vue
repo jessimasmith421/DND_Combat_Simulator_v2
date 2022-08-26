@@ -2,13 +2,13 @@
   <div>
     <div
       v-for="character in characters"
-      v-bind:key="character.id"
+      v-bind:key="character.id" 
       class="characters"
     >
       <router-link
         v-bind:to="{ name: 'CharactersDetails', params: { id: character.id } }"
       >
-        <h2>{{ character.name }}</h2>
+        <h2>{{character.name}}</h2>
       </router-link>
     </div>
   </div>
