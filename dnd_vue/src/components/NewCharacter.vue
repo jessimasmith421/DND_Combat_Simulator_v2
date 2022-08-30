@@ -22,13 +22,43 @@
       </p>
       <p>
         Stat Generation Method:
-        <button v-on:click.prevent="changeStatGenMethod" v-bind:class="{active : statGen.isPointBuy}" name="pointBuy">Point Buy</button>
-        <button v-on:click.prevent="changeStatGenMethod" v-bind:class="{active : statGen.isStandardArray}" name="standardArray">Standard Array</button>
-        <button v-on:click.prevent="changeStatGenMethod" v-bind:class="{active : statGen.isRolled}" name="rolled">Rolled</button>
+        <button
+          v-on:click.prevent="changeStatGenMethod"
+          v-bind:class="{ active: statGen.isPointBuy }"
+          name="pointBuy"
+        >
+          Point Buy
+        </button>
+        <button
+          v-on:click.prevent="changeStatGenMethod"
+          v-bind:class="{ active: statGen.isStandardArray }"
+          name="standardArray"
+        >
+          Standard Array
+        </button>
+        <button
+          v-on:click.prevent="changeStatGenMethod"
+          v-bind:class="{ active: statGen.isRolled }"
+          name="rolled"
+        >
+          Rolled
+        </button>
       </p>
-      <div v-if="statGen.isPointBuy" id="pointBuyInfo">Total points remaining: {{statGen.points}}
-        <p><a href="https://mykindofmeeple.com/how-to-use-point-buy-5e-dnd-pros-cons/">"Point buy is a method for assigning ability scores during character creation in D&D 5e. You have a set pool of points which you can use to 'buy' corresponding ability scores. When you've spent all your points, you can't increase your scores anymore."</a> </p>
-        <p>You cannot have more than 15 or less than 8 in any stat. The cost to increase stats is shown below:</p>
+      <div v-if="statGen.isPointBuy" id="pointBuyInfo">
+        Total points remaining: {{ statGen.points }}
+        <p>
+          <a
+            href="https://mykindofmeeple.com/how-to-use-point-buy-5e-dnd-pros-cons/"
+            >"Point buy is a method for assigning ability scores during
+            character creation in D&D 5e. You have a set pool of points which
+            you can use to 'buy' corresponding ability scores. When you've spent
+            all your points, you can't increase your scores anymore."</a
+          >
+        </p>
+        <p>
+          You cannot have more than 15 or less than 8 in any stat. The cost to
+          increase stats is shown below:
+        </p>
         <table>
           <thead>
             <th>Score</th>
@@ -70,29 +100,108 @@
           </tbody>
         </table>
       </div>
-      <div v-if="statGen.isStandardArray" id="standardArrayInfo">If you want to go quick, you can assign these 6 numbers to each of the 6 stats! Only use each number once!
+      <div v-if="statGen.isStandardArray" id="standardArrayInfo">
+        If you want to go quick, you can assign these 6 numbers to each of the 6
+        stats! Only use each number once!
         <p>15, 14, 13, 12, 10, 8</p>
-         </div>
+      </div>
+      <div v-if="statGen.isRolled" id="rolledInfo">MORE INFO HERE</div>
       <p>
         <label for="strength">Strength: </label>
-        <select name="strength" id="" v-if="statGen.isStandardArray" v-model="newChar.strength" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="strength"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.strength"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
-        <input type="number" name="strength" v-model="newChar.strength" :disabled="statGen.isPointBuy" v-else/>
-        <span v-if="statGen.isPointBuy"><button name= "strength" v-on:click.prevent="increaseStat" :disabled="newChar.strength ==15 || statGen.points==0">+</button><button name= "strength" v-on:click.prevent="decreaseStat" :disabled="newChar.strength ==8 || statGen.points==27">-</button></span>
+        <input
+          type="number"
+          name="strength"
+          v-model="newChar.strength"
+          :disabled="statGen.isPointBuy"
+          v-else
+        />
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="strength"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.strength == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="strength"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.strength == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="dexterity">Dexterity: </label>
-        <select name="dexterity" id="" v-if="statGen.isStandardArray" v-model="newChar.dexterity" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="dexterity"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.dexterity"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
-        <input type="number" name="dexterity" v-model="newChar.dexterity" :disabled="statGen.isPointBuy" v-else/>
-        <span v-if="statGen.isPointBuy"><button name= "dexterity" v-on:click.prevent="increaseStat" :disabled="newChar.dexterity ==15 || statGen.points==0">+</button><button name= "dexterity" v-on:click.prevent="decreaseStat" :disabled="newChar.dexterity ==8 || statGen.points==27">-</button></span>
+        <input
+          type="number"
+          name="dexterity"
+          v-model="newChar.dexterity"
+          :disabled="statGen.isPointBuy"
+          v-else
+        />
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="dexterity"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.dexterity == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="dexterity"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.dexterity == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="constitution">Constitution: </label>
-        <select name="constitution" id="" v-if="statGen.isStandardArray" v-model="newChar.constitution" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="constitution"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.constitution"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
         <input
           type="number"
@@ -101,12 +210,38 @@
           :disabled="statGen.isPointBuy"
           v-else
         />
-        <span v-if="statGen.isPointBuy"><button name= "constitution" v-on:click.prevent="increaseStat" :disabled="newChar.constitution ==15 || statGen.points==0">+</button><button name= "constitution" v-on:click.prevent="decreaseStat" :disabled="newChar.constitution ==8 || statGen.points==27">-</button></span>
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="constitution"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.constitution == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="constitution"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.constitution == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="intelligence">Intelligence: </label>
-        <select name="intelligence" id="" v-if="statGen.isStandardArray" v-model="newChar.intelligence" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="intelligence"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.intelligence"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
         <input
           type="number"
@@ -115,23 +250,101 @@
           :disabled="statGen.isPointBuy"
           v-else
         />
-        <span v-if="statGen.isPointBuy"><button name= "intelligence" v-on:click.prevent="increaseStat" :disabled="newChar.intelligence ==15 || statGen.points==0">+</button><button name= "intelligence" v-on:click.prevent="decreaseStat" :disabled="newChar.intelligence ==8 || statGen.points==27">-</button></span>
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="intelligence"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.intelligence == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="intelligence"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.intelligence == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="wisdom">Wisdom: </label>
-        <select name="wisdom" id="" v-if="statGen.isStandardArray" v-model="newChar.wisdom" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="wisdom"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.wisdom"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
-        <input type="number" name="wisdom" v-model="newChar.wisdom" :disabled="statGen.isPointBuy" v-else/>
-        <span v-if="statGen.isPointBuy"><button name= "wisdom" v-on:click.prevent="increaseStat" :disabled="newChar.wisdom ==15 || statGen.points==0">+</button><button name= "wisdom" v-on:click.prevent="decreaseStat" :disabled="newChar.wisdom ==8 || statGen.points==27">-</button></span>
+        <input
+          type="number"
+          name="wisdom"
+          v-model="newChar.wisdom"
+          :disabled="statGen.isPointBuy"
+          v-else
+        />
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="wisdom"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.wisdom == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="wisdom"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.wisdom == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="charisma">Charisma: </label>
-        <select name="charisma" id="" v-if="statGen.isStandardArray" v-model="newChar.charisma" v-on:change.prevent="updateCheckArray">
-          <option v-for="num in statGen.stanArray" v-bind:key="num" v-bind:value="num">{{num}}</option>
+        <select
+          name="charisma"
+          id=""
+          v-if="statGen.isStandardArray"
+          v-model="newChar.charisma"
+          v-on:change="updateCheckArray"
+        >
+          <option
+            v-for="num in statGen.stanArray"
+            v-bind:key="num"
+            v-bind:value="num"
+          >
+            {{ num }}
+          </option>
         </select>
-        <input type="number" name="charisma" v-model="newChar.charisma" :disabled="statGen.isPointBuy" v-else/>
-        <span v-if="statGen.isPointBuy"><button name= "charisma" v-on:click.prevent="increaseStat" :disabled="newChar.charisma ==15 || statGen.points==0">+</button><button name= "charisma" v-on:click.prevent="decreaseStat" :disabled="newChar.charisma ==8 || statGen.points==27">-</button></span>
+        <input
+          type="number"
+          name="charisma"
+          v-model="newChar.charisma"
+          :disabled="statGen.isPointBuy"
+          v-else
+        />
+        <span v-if="statGen.isPointBuy"
+          ><button
+            name="charisma"
+            v-on:click.prevent="increaseStat"
+            :disabled="newChar.charisma == 15 || statGen.points == 0"
+          >
+            +</button
+          ><button
+            name="charisma"
+            v-on:click.prevent="decreaseStat"
+            :disabled="newChar.charisma == 8 || statGen.points == 27"
+          >
+            -
+          </button></span
+        >
       </p>
       <p>
         <label for="weapon">Weapon: </label>
@@ -146,7 +359,7 @@
           </option>
         </select>
       </p>
-      <input type="submit" id="submit" :disabled='conditions'/>
+      <input type="submit" id="submit" :disabled="conditions" />
     </form>
   </div>
 </template>
@@ -174,141 +387,127 @@ export default {
         isPointBuy: false,
         points: 27,
         isStandardArray: false,
-        stanArray: [8,10,12,13,14,15],
-        checkArray:[],
+        stanArray: [8, 10, 12, 13, 14, 15],
+        checkArray: [],
         isRolled: false,
       },
     };
   },
   methods: {
-    increaseStat(){
-      switch(event.target.name){
-        case 'strength':
-          if(this.newChar.strength< 13){
+    increaseStat() {
+      switch (event.target.name) {
+        case "strength":
+          if (this.newChar.strength < 13) {
             this.newChar.strength++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.strength++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-          case 'dexterity':
-            if(this.newChar.dexterity< 13){
+          break;
+        case "dexterity":
+          if (this.newChar.dexterity < 13) {
             this.newChar.dexterity++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.dexterity++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-            case 'constitution':
-            if(this.newChar.constitution< 13){
+          break;
+        case "constitution":
+          if (this.newChar.constitution < 13) {
             this.newChar.constitution++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.constitution++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-            case 'intelligence':
-            if(this.newChar.intelligence< 13){
+          break;
+        case "intelligence":
+          if (this.newChar.intelligence < 13) {
             this.newChar.intelligence++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.intelligence++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-            case 'wisdom':
-            if(this.newChar.wisdom< 13){
+          break;
+        case "wisdom":
+          if (this.newChar.wisdom < 13) {
             this.newChar.wisdom++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.wisdom++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-            case 'charisma':
-            if(this.newChar.charisma< 13){
+          break;
+        case "charisma":
+          if (this.newChar.charisma < 13) {
             this.newChar.charisma++;
-          this.statGen.points--;
-          }
-          else {
+            this.statGen.points--;
+          } else {
             this.newChar.charisma++;
-            this.statGen.points -=2;
+            this.statGen.points -= 2;
           }
-            break;
-
+          break;
       }
     },
-    decreaseStat(event){
-      switch(event.target.name){
-        case 'strength':
-          if(this.newChar.strength<= 13){
+    decreaseStat(event) {
+      switch (event.target.name) {
+        case "strength":
+          if (this.newChar.strength <= 13) {
             this.newChar.strength--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.strength--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-          case 'dexterity':
-            if(this.newChar.dexterity<= 13){
+          break;
+        case "dexterity":
+          if (this.newChar.dexterity <= 13) {
             this.newChar.dexterity--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.dexterity--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-            case 'constitution':
-            if(this.newChar.constitution<= 13){
+          break;
+        case "constitution":
+          if (this.newChar.constitution <= 13) {
             this.newChar.constitution--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.constitution--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-            case 'intelligence':
-            if(this.newChar.intelligence<= 13){
+          break;
+        case "intelligence":
+          if (this.newChar.intelligence <= 13) {
             this.newChar.intelligence--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.intelligence--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-            case 'wisdom':
-            if(this.newChar.wisdom<= 13){
+          break;
+        case "wisdom":
+          if (this.newChar.wisdom <= 13) {
             this.newChar.wisdom--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.wisdom--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-            case 'charisma':
-            if(this.newChar.charisma<= 13){
+          break;
+        case "charisma":
+          if (this.newChar.charisma <= 13) {
             this.newChar.charisma--;
-          this.statGen.points++;
-          }
-          else {
+            this.statGen.points++;
+          } else {
             this.newChar.charisma--;
-            this.statGen.points +=2;
+            this.statGen.points += 2;
           }
-            break;
-
+          break;
       }
     },
     changeStatGenMethod(event) {
@@ -319,7 +518,7 @@ export default {
         this.statGen.isRolled = false;
         this.statGen.points = 27;
         this.newChar.strength = 8;
-        this.newChar.dexterity= 8;
+        this.newChar.dexterity = 8;
         this.newChar.constitution = 8;
         this.newChar.intelligence = 8;
         this.newChar.wisdom = 8;
@@ -331,14 +530,14 @@ export default {
         this.statGen.isPointBuy = false;
         this.statGen.isStandardArray = true;
         this.statGen.isRolled = false;
-       
-          this.newChar.strength= 0;
-          this.newChar.dexterity= 0;
-          this.newChar.constitution= 0;
-          this.newChar.intelligence= 0;
-          this.newChar.wisdom= 0;
-          this.newChar.charisma= 0;
-        
+
+        this.newChar.strength = 0;
+        this.newChar.dexterity = 0;
+        this.newChar.constitution = 0;
+        this.newChar.intelligence = 0;
+        this.newChar.wisdom = 0;
+        this.newChar.charisma = 0;
+
         this.statGen.checkArray = [];
       } else if (event.target.name == "rolled" && !this.statGen.isRolled) {
         this.statGen.isPointBuy = false;
@@ -383,48 +582,78 @@ export default {
           charisma: 0,
           weapon: "",
         };
-        this.statGen= {
-          isPointBuy: false,
+        this.statGen = {
+        isPointBuy: false,
         points: 27,
         isStandardArray: false,
+        stanArray: [8, 10, 12, 13, 14, 15],
         checkArray: [],
         isRolled: false,
-        }
+      
+        };
       });
     },
-    updateCheckArray(event){
-      if(!this.statGen.checkArray.includes(event.target.value)){
-
+    updateCheckArray(event) {
+      if (!this.statGen.checkArray.includes(event.target.value)) {
         this.statGen.checkArray.push(event.target.value);
       }
-      console.log(this.statGen.checkArray.length)
-    }
-
+      if (this.statGen.stanArray.includes(event.target.value)) {
+        this.statGen.stanArray = this.statGen.stanArray.filter(
+          (num) => num != event.target.value
+        );
+      }
+      console.log(this.statGen.checkArray.length);
+    },
   },
   created() {},
   computed: {
-    conditions(){
-      if (this.statGen.isPointBuy && this.statGen.points>=0) {
+    conditions() {
+      if (this.statGen.isPointBuy && this.statGen.points >= 0) {
         return false;
       }
       // else if (!this.statGen.isPointBuy){
       //   return false;
       // }
-      else if (this.statGen.isStandardArray && this.statGen.checkArray.length == 6){// this doesn't work perfectly because they could add all the stats to the check array and then change them to submit but it's a start
-          return false;
+      else if (
+        this.statGen.isStandardArray &&
+        this.statGen.checkArray.length == 6 && this.updatedStanArray.length == 0
+      ) {
+        // this doesn't work perfectly because they could add all the stats to the check array and then change them to submit but it's a start
+        // fixed it so that the computed property Updated Stan Array needs to have a length of 0 in order to submit
+        return false;
       }
       return true;
-    }
-  },
-};
+    },
+    updatedStanArray() {
+      return this.statGen.stanArray.filter((num) => {
+        //console.log("number here??", num);
+        if (num == this.newChar.strength) {
+          return false;
+        }  if (num == this.newChar.dexterity) {
+          return false;
+        }  if (num == this.newChar.constitution) {
+          return false;
+        }  if (num == this.newChar.intelligence) {
+          return false;
+        }  if (num == this.newChar.wisdom) {
+          return false;
+        }  if (num == this.newChar.charisma) {
+          return false;
+        }
+          return true;
+        });
+      }
+    },
+  }
+
 </script>
 
 <style>
-#pointBuyInfo{
+#pointBuyInfo {
   width: 75%;
   text-align: center;
 }
-table{
+table {
   border: 1px solid black;
   margin: auto;
   padding: 5px;
@@ -440,7 +669,7 @@ form {
   width: 30%;
 }
 
-.active{
+.active {
   background-color: red;
 }
 </style>
