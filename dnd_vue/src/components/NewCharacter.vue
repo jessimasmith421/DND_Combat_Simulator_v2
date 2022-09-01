@@ -131,7 +131,7 @@
             </thead>
             <tbody>
               <tr>
-                <td v-for="num in statGen.rolledNums" v-bind:key="num.id" v-bind:class="{statUsed : (statGen.checkArray.some(n => n.roll == num.roll) && statGen.checkArray.length >0)}">
+                <td v-for="num in statGen.rolledNums" v-bind:key="num.id" v-bind:class="{statUsed : (statGen.checkArray.some(n => n.id == num.id) && statGen.checkArray.length >0 && !rollStatCheck.some(m=> m.id == num.id))}">
                   {{num.roll}}
                 </td>
                 
@@ -157,7 +157,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll" >{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj" >{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -200,7 +200,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll">{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj">{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -242,7 +242,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll">{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj">{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -284,7 +284,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll">{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj">{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -326,7 +326,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll">{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj">{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -368,7 +368,7 @@
           >
             {{ num }}
           </option>
-          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj.roll">{{numObj.roll}}</option>
+          <option v-show="statGen.isRolled" v-for="numObj in statGen.rolledNums" v-bind:key="numObj.id" v-bind:value="numObj">{{numObj.id}}. {{numObj.roll}}</option>
         </select>
         <input
           type="number"
@@ -600,7 +600,7 @@ export default {
       }
     },
     changeStatGenMethod(event) {
-      console.log(event);
+      //console.log(event);
       if (event.target.name == "pointBuy" && !this.statGen.isPointBuy) {
         this.statGen.isPointBuy = true;
         this.statGen.isStandardArray = false;
@@ -634,9 +634,9 @@ export default {
         this.statGen.isRolled = true;
         
       }
-      console.log("point buy", this.statGen.isPointBuy);
-      console.log("standard array", this.statGen.isStandardArray);
-      console.log("rolled", this.statGen.isRolled);
+      // console.log("point buy", this.statGen.isPointBuy);
+      // console.log("standard array", this.statGen.isStandardArray);
+      // console.log("rolled", this.statGen.isRolled);
     },
     randomNameGenerate() {
       let randoName = nameByRace("human", {
@@ -703,11 +703,15 @@ export default {
         // console.log(event.target)
         // console.log(event.target.options)
         // console.log(event.target.options[i])
+        // console.log(event.target.options[i]._value)
         if(!this.statGen.checkArray.find(o => o.id == i)){
 
-          this.statGen.checkArray.push({id: i, roll: event.target.value});
+          this.statGen.checkArray.push(event.target.options[i]._value);
         }
         
+        for (let index=0; index < event.target.options.length; index++){
+          event.target.options[index].disabled = false;
+        }
         event.target.options[i].disabled = true;
       }
   }
@@ -727,7 +731,7 @@ export default {
         // fixed it so that the computed property Updated Stan Array needs to have a length of 0 in order to submit
         return false;
       }
-      else if (this.statGen.isRolled){
+      else if (this.statGen.isRolled && this.rollStatCheck.length == 0){
         return false;
       }
       return true;
@@ -735,22 +739,22 @@ export default {
     updatedStanArray() {
       return this.statGen.stanArray.filter((num) => {
         //console.log("number here??", num);
-        if (num == this.newChar.strength) {
+        if (num.id == this.newChar.strength.id) {
           return false;
         }
-        if (num == this.newChar.dexterity) {
+        if (num.id == this.newChar.dexterity.id) {
           return false;
         }
-        if (num == this.newChar.constitution) {
+        if (num.id == this.newChar.constitution.id) {
           return false;
         }
-        if (num == this.newChar.intelligence) {
+        if (num.id == this.newChar.intelligence.id) {
           return false;
         }
-        if (num == this.newChar.wisdom) {
+        if (num.id == this.newChar.wisdom.id) {
           return false;
         }
-        if (num == this.newChar.charisma) {
+        if (num.id == this.newChar.charisma.id) {
           return false;
         }
         return true;
