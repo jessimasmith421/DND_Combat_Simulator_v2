@@ -407,6 +407,7 @@
         </select>
       </p>
       <input type="submit" id="submit" :disabled="conditions" />
+    <button v-on:click.prevent="randomCharacterGenerator">RANDOM CHARACTER!!!</button>
     </form>
   </div>
 </template>
@@ -442,8 +443,23 @@ export default {
     };
   },
   methods: {
-    rollStat(event){
-      // console.log(event)
+    randomCharacterGenerator(){
+      this.reset();
+      this.randomNameGenerate();
+      this.newChar.strength = this.diceStatRoll();
+      this.newChar.dexterity = this.diceStatRoll();
+      this.newChar.constitution = this.diceStatRoll();
+      this.newChar.intelligence = this.diceStatRoll();
+      this.newChar.wisdom = this.diceStatRoll();
+      this.newChar.charisma = this.diceStatRoll();
+      let numOfWeapons = this.$store.state.weapons.length;
+      let weaponIndex = Math.floor(Math.random()* numOfWeapons)
+      this.newChar.weapon = this.$store.state.weapons[weaponIndex].weaponType;
+      let numOfRaces = this.$store.state.races.length;
+      let raceIndex = Math.floor(Math.random()* numOfRaces);
+      this.newChar.race = this.$store.state.races[raceIndex].raceType;
+    },
+    diceStatRoll(){
       let maxNumber = 6;
       let nums = [];
       nums.push((Math.floor(Math.random()* maxNumber) +1)); //first dice roll
@@ -453,6 +469,10 @@ export default {
       nums.sort(); //organizes list from smallest to largest
       nums.shift(); //removes the first element of the array
       let diceRoll = nums[0] + nums[1] + nums [2]; //adds the elements of the array together
+      return diceRoll;
+    },
+    rollStat(event){
+      let diceRoll = this.diceStatRoll();
       let id = event.target.id[event.target.id.length-1];
       this.statGen.rolledNums.find(o => {
         if(o.id==id){
@@ -732,6 +752,9 @@ export default {
         return false;
       }
       else if (this.statGen.isRolled && this.rollStatCheck.length == 0){
+        return false;
+      }
+      else if (!this.statGen.isPointBuy && !this.statGen.isStandardArray && !this.statGen.isRolled){
         return false;
       }
       return true;
