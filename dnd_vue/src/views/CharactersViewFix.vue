@@ -12,7 +12,7 @@
           type="checkBox"
           v-model="filter.races[race.raceType]"
           :name="race.raceType"
-          v-on:change="check"
+          v-on:click="check"
         />
         <label v-bind:for="race.raceType">{{ race.raceType }}</label>
       </div>
@@ -29,7 +29,7 @@
     </div>
     <div class="allCharacters">
       <div
-        v-for="character in characters"
+        v-for="character in filterList"
         v-bind:key="character.id"
         class="characters"
       >
@@ -68,19 +68,22 @@ export default {
     };
   },
   methods: {
-    // check(event) {
-    //   console.log(event);
-    //   console.log(event.target);
-    //   console.log(event.target.name);
-    //   let checkedRace = this.filter.races.find((r) => {
-    //     r.raceType == event.target.name;
-    //   });
-    //   if (checkedRace.isChecked) {
-    //     checkedRace.isChecked = false;
-    //   } else {
-    //     checkedRace.isChecked = true;
-    //   }
-    // },
+    check(event) {
+      console.log(event);
+      console.log(event.target);
+      console.log(event.target.name);
+      event.target.value = event.target.name;
+      let checkedRace = this.filter.races.find((r) => 
+        
+        r.raceType == event.target.name
+      );
+      console.log(checkedRace);
+      if (event.target.checked) {
+        checkedRace.isChecked = true;
+      } else {
+        checkedRace.isChecked = false;
+      }
+    },
     getCharacters() {
       DNDService.getCharacters().then((response) => {
         let list = response.data;
@@ -121,8 +124,7 @@ export default {
     filterList() {
       return this.characters.filter((c) => {
         if (
-          this.filter.races[c.race.raceType] &&
-          c.race.raceType == this.filter.race
+          this.filter.races[c.race.raceType]
         ) {
           return false;
         }
