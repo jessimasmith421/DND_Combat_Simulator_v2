@@ -14,10 +14,10 @@ namespace DND_Combat_Simulator_v2.Controller
             this.characterDAO = cdao;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult GetCharacter(int id)
         {
-            Character character = characterDAO.GetCharacterById(id);
+            Character? character = characterDAO.GetCharacterById(id);
             if (character == null)
             {
                 return NotFound();
@@ -26,10 +26,10 @@ namespace DND_Combat_Simulator_v2.Controller
         }
 
         [HttpGet()]
-        public ActionResult GetCharacters(int id)
+        public ActionResult GetCharacters()
         {
             List<Character> characters = characterDAO.GetAllCharacters();
-            if (characters == null)
+            if (!characters.Any())
             {
                 return NotFound();
             }
@@ -40,10 +40,7 @@ namespace DND_Combat_Simulator_v2.Controller
         public ActionResult AddCharacter(Character newChar)
         {
             newChar = characterDAO.AddNewCharacter(newChar);
-            if (newChar == null)
-            {
-                return BadRequest();
-            }
+            
             return Created("/characters/" + newChar.Id, newChar);
         }
     }

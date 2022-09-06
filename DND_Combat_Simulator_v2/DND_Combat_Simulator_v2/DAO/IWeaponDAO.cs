@@ -6,7 +6,7 @@ namespace DND_Combat_Simulator_v2.DAO
 {
     public interface IWeaponDAO
     {
-        Weapon GetWeaponById(int id);
+        Weapon? GetWeaponById(int id);
         List<Weapon> GetAllWeapons();
     }
 }

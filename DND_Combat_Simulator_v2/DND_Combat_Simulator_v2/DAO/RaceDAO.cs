@@ -13,33 +13,35 @@ namespace DND_Combat_Simulator_v2.DAO
             this.connectionString = constr;
         }
 
-        public Race GetRaceById(int id)
+        public Race? GetRaceById(int id)
         {
-            Race race = null;
+            Race? race = null;
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new(connectionString))
             {
                 conn.Open();
-                string sql = "SELECT id,race,strength_bonus,dexterity_bonus,constitution_bonus,intelligence_bonus,wisdom_bonus,charisma_bonus,size,speed,traits " +
+                const string sql = "SELECT id,race,strength_bonus,dexterity_bonus,constitution_bonus,intelligence_bonus,wisdom_bonus,charisma_bonus,size,speed,traits " +
                     "FROM Races WHERE id=@id";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlCommand cmd = new(sql, conn);
                 cmd.Parameters.AddWithValue("@id", id);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows && reader.Read())
+                {
                     race = GetRaceFromDataReader(reader);
+                }
             }
             return race;
         }
         public List<Race> GetAllRaces()
         {
-            List<Race> races = new List<Race>();
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            List<Race> races = new();
+            using (SqlConnection conn = new(connectionString))
             {
                 conn.Open();
-                string sql = "SELECT id,race,strength_bonus,dexterity_bonus,constitution_bonus,intelligence_bonus,wisdom_bonus,charisma_bonus,size,speed,traits " +
+                const string sql = "SELECT id,race,strength_bonus,dexterity_bonus,constitution_bonus,intelligence_bonus,wisdom_bonus,charisma_bonus,size,speed,traits " +
                     "FROM Races";
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlCommand cmd = new(sql, conn);
                 
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -57,7 +59,7 @@ namespace DND_Combat_Simulator_v2.DAO
 
         private static Race GetRaceFromDataReader(SqlDataReader reader)
         {
-            return new Race()
+            return new Race
             {
 
                 Id = Convert.ToInt32(reader["id"]),
