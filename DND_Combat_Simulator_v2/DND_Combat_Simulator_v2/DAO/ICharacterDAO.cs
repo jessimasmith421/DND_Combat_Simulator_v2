@@ -8,7 +8,7 @@ namespace DND_Combat_Simulator_v2.DAO
 {
     public interface ICharacterDAO
     {
-        Character GetCharacterById(int id);
+        Character? GetCharacterById(int id);
         List<Character> GetAllCharacters();
 
         Character AddNewCharacter(Character newChar);

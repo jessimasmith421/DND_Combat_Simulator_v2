@@ -15,10 +15,10 @@ namespace DND_Combat_Simulator_v2.Controller
             this.weaponDAO = wdao;
         }
 
-        [HttpGet("{id}")]
-        public ActionResult getWeapon(int id)
+        [HttpGet("{id:int}")]
+        public ActionResult GetWeapon(int id)
         {
-            Weapon weapon = weaponDAO.GetWeaponById(id);
+            Weapon? weapon = weaponDAO.GetWeaponById(id);
             if (weapon == null)
             {
                 return NotFound();
@@ -27,10 +27,10 @@ namespace DND_Combat_Simulator_v2.Controller
         }
 
         [HttpGet()]
-        public ActionResult getWeapons()
+        public ActionResult GetWeapons()
         {
             List<Weapon> weapons = weaponDAO.GetAllWeapons();
-            if (weapons == null)
+            if (!weapons.Any())
             {
                 return NotFound();
             }

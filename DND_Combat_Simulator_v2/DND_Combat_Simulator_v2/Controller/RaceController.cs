@@ -15,10 +15,10 @@ namespace DND_Combat_Simulator_v2.Controller
             this.raceDAO = rdao;
         }
 
-        [HttpGet("{id}")]
-        public ActionResult getRace(int id)
+        [HttpGet("{id:int}")]
+        public ActionResult GetRace(int id)
         {
-            Race race = raceDAO.GetRaceById(id);
+            Race? race = raceDAO.GetRaceById(id);
             if (race == null)
             {
                 return NotFound();
@@ -27,10 +27,10 @@ namespace DND_Combat_Simulator_v2.Controller
         }
 
         [HttpGet()]
-        public ActionResult getRaces()
+        public ActionResult GetRaces()
         {
             List<Race> races = raceDAO.GetAllRaces();
-            if (races ==null)
+            if (!races.Any())
             {
                 return NotFound();
             }

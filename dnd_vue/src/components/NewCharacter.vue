@@ -460,8 +460,8 @@ export default {
       this.newChar.race = this.$store.state.races[raceIndex].raceType;
     },
     diceStatRoll(){
-      let maxNumber = 6;
-      let nums = [];
+      const maxNumber = 6;
+      const nums = [];
       nums.push((Math.floor(Math.random()* maxNumber) +1)); //first dice roll
       nums.push((Math.floor(Math.random()* maxNumber) +1)); //second dice roll
       nums.push((Math.floor(Math.random()* maxNumber) +1)); //third dice roll
