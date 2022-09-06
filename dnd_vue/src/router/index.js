@@ -46,6 +46,7 @@ const routes = [
     name: 'CharactersDetails',
     component: CharactersDetails,
   }
+  // Don't forget a "Not Found" route
 ]
 
 const router = new VueRouter({
