@@ -108,11 +108,12 @@
           </tbody>
         </table>
       </div> -->
-      <div v-if="statGen.isStandardArray" id="standardArrayInfo">
+      <!-- <div v-if="statGen.isStandardArray" id="standardArrayInfo">
         If you want to go quick, you can assign these 6 numbers to each of the 6
         stats! Only use each number once!
         <p>15, 14, 13, 12, 10, 8</p>
-      </div>
+      </div> -->
+      <standard-array-new-char :newChar.sync="newChar" :statGen.sync="statGen" @updateCheckArray="updateCheckArray" v-else-if="statGen.isStandardArray" />
       <div v-if="statGen.isRolled" id="rolledInfo">
         When you roll stats, you roll 4 6-sided dice and add the three highest
         numbers together (dropping the lowest number!)
@@ -169,6 +170,8 @@
           </table>
         </div>
       </div>
+      <div v-if=" !statGen.isStandardArray"> <!-- Add a v-else here!!! for when stats are not rolled, stan array, or point buy-->
+
       <p v-if="!statGen.isPointBuy">
         <label for="strength">Strength: </label>
         <select
@@ -178,14 +181,14 @@
           v-model="newChar.strength"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -227,14 +230,14 @@
           v-model="newChar.dexterity"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -276,14 +279,14 @@
           v-model="newChar.constitution"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -325,14 +328,14 @@
           v-model="newChar.intelligence"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -374,14 +377,14 @@
           v-model="newChar.wisdom"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -423,14 +426,14 @@
           v-model="newChar.charisma"
           v-on:change="updateCheckArray"
         >
-          <option
+          <!-- <option
             v-for="num in statGen.stanArray"
             v-bind:key="num"
             v-bind:value="num"
             v-show="statGen.isStandardArray"
           >
             {{ num }}
-          </option>
+          </option> -->
           <option
             v-show="statGen.isRolled"
             v-for="numObj in statGen.rolledNums"
@@ -463,6 +466,7 @@
           </button></span
         >
       </p>
+      </div>
       <p>
         <label for="weapon">Weapon: </label>
         <select name="weapon" v-model="newChar.weapon">
@@ -488,9 +492,10 @@
 import DNDService from "@/services/DnDService";
 import { nameByRace } from "fantasy-name-generator"; // this is a npm i found and installed
 import PointBuyNewChar from "./PointBuyNewChar.vue";
+import StandardArrayNewChar from "./StandardArrayNewChar.vue";
 
 export default {
-  components: { PointBuyNewChar },
+  components: { PointBuyNewChar, StandardArrayNewChar },
   name: "CharactersView",
   data() {
     return {
@@ -613,12 +618,16 @@ export default {
           if (s.value < 13) {
             s.value++;
             this.statGen.points--;
-          } else {
+          } else if(!((this.statGen.points - 2 )<0)){
             s.value++;
             this.statGen.points -= 2;
           }
+          else {
+            console.log("Not enough points!!");
+          }
+          }
         }
-      });
+      );
     },
     
     decreaseStat(){
@@ -655,13 +664,13 @@ export default {
         this.statGen.isPointBuy = false;
         this.statGen.isStandardArray = true;
         this.statGen.isRolled = false;
-
-        this.newChar.strength = 0;
-        this.newChar.dexterity = 0;
-        this.newChar.constitution = 0;
-        this.newChar.intelligence = 0;
-        this.newChar.wisdom = 0;
-        this.newChar.charisma = 0;
+        this.newChar.stats.forEach(s =>{s.value = 0})
+        // this.newChar.strength = 0;
+        // this.newChar.dexterity = 0;
+        // this.newChar.constitution = 0;
+        // this.newChar.intelligence = 0;
+        // this.newChar.wisdom = 0;
+        // this.newChar.charisma = 0;
 
         this.statGen.checkArray = [];
       } else if (event.target.name == "rolled" && !this.statGen.isRolled) {
@@ -725,17 +734,21 @@ export default {
           });
       });
     },
-    updateCheckArray(event) {
+    updateCheckArray() {
       if (this.statGen.isStandardArray) {
-        if (!this.statGen.checkArray.includes(event.target.value)) {
-          this.statGen.checkArray.push(event.target.value);
+        let stat = this.newChar.stats.find(s => s.name == event.target.name)
+          stat.value = parseInt(event.target.value); //this is where the stat is set
+
+          if (!this.statGen.checkArray.includes(event.target.value)) {
+            this.statGen.checkArray.push(event.target.value);
         }
         if (this.statGen.stanArray.includes(event.target.value)) {
           this.statGen.stanArray = this.statGen.stanArray.filter(
             (num) => num != event.target.value
           );
         }
-        console.log(this.statGen.checkArray.length);
+            
+        console.log("check Array Length: ", this.statGen.checkArray.length);
       } else if (this.statGen.isRolled) {
         let i = event.target.options.selectedIndex;
         // console.log(event)
@@ -782,22 +795,23 @@ export default {
     updatedStanArray() {
       return this.statGen.stanArray.filter((num) => {
         //console.log("number here??", num);
-        if (num.id == this.newChar.strength.id) {
+          
+        if (num == this.newChar.stats[0].value) {
           return false;
         }
-        if (num.id == this.newChar.dexterity.id) {
+        if (num == this.newChar.stats[1].value) {
           return false;
         }
-        if (num.id == this.newChar.constitution.id) {
+        if (num == this.newChar.stats[2].value) {
           return false;
         }
-        if (num.id == this.newChar.intelligence.id) {
+        if (num == this.newChar.stats[3].value) {
           return false;
         }
-        if (num.id == this.newChar.wisdom.id) {
+        if (num == this.newChar.stats[4].value) {
           return false;
         }
-        if (num.id == this.newChar.charisma.id) {
+        if (num == this.newChar.stats[5].value) {
           return false;
         }
         return true;

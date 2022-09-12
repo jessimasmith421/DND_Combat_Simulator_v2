@@ -68,16 +68,17 @@
           ><button
             v-bind:name="stat.name"
             v-on:click.prevent="increaseStat"
-            :disabled="newChar.stats[index].value== 15 || statGen.points == 0"
+            :disabled="newChar.stats[index].value>= 15 || statGen.points <= 0 || (newChar.stats[index].value>=13 && statGen.points<2)"
           >
             +</button
           ><button
             v-bind:name="stat.name"
             v-on:click.prevent="decreaseStat"
-            :disabled="newChar.stats[index].value == 8 || statGen.points == 27"
+            :disabled="newChar.stats[index].value <= 8 || statGen.points >= 27"
           >
             -
-          </button></span
+          </button>
+          <small class="error" v-show="(newChar.stats[index].value==13 || newChar.stats[index].value==14) && statGen.points<=1">Not enough points to increase stat!</small></span
         >
       </p>
     </div>
@@ -99,11 +100,17 @@ export default {
             this.$emit('decreaseStat','$event')
             //console.log(event)
         }
+    },
+    computed:{
+      
     }
 
 }
 </script>
 
 <style>
+.error{
+  color: red;
+}
 
 </style>
