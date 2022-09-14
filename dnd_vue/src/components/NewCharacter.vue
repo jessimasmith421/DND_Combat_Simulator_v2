@@ -52,174 +52,24 @@
         @decreaseStat="decreaseStat"
         v-if="statGen.isPointBuy"
       />
-      <!-- <div v-if="statGen.isPointBuy" id="pointBuyInfo">
-        Total points remaining: {{ statGen.points }}
-        <p>
-          <a
-            href="https://mykindofmeeple.com/how-to-use-point-buy-5e-dnd-pros-cons/"
-            >"Point buy is a method for assigning ability scores during
-            character creation in D&D 5e. You have a set pool of points which
-            you can use to 'buy' corresponding ability scores. When you've spent
-            all your points, you can't increase your scores anymore."</a
-          >
-        </p>
-        <p>
-          You cannot have more than 15 or less than 8 in any stat. The cost to
-          increase stats is shown below:
-        </p>
-        <table>
-          <thead>
-            <th>Score</th>
-            <th>Cost</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>8</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>9</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>10</td>
-              <td>2</td>
-            </tr>
-            <tr>
-              <td>11</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>12</td>
-              <td>4</td>
-            </tr>
-            <tr>
-              <td>13</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>14</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>15</td>
-              <td>9</td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
-      <!-- <div v-if="statGen.isStandardArray" id="standardArrayInfo">
-        If you want to go quick, you can assign these 6 numbers to each of the 6
-        stats! Only use each number once!
-        <p>15, 14, 13, 12, 10, 8</p>
-      </div> -->
       <standard-array-new-char :newChar.sync="newChar" :statGen.sync="statGen" @updateCheckArray="updateCheckArray" v-else-if="statGen.isStandardArray" />
-      <div v-if="statGen.isRolled" id="rolledInfo">
-        When you roll stats, you roll 4 6-sided dice and add the three highest
-        numbers together (dropping the lowest number!)
-        <div>
-          <table>
-            <thead>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll1">
-                  ROLL DICE
-                </button>
-              </th>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll2">
-                  ROLL DICE
-                </button>
-              </th>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll3">
-                  ROLL DICE
-                </button>
-              </th>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll4">
-                  ROLL DICE
-                </button>
-              </th>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll5">
-                  ROLL DICE
-                </button>
-              </th>
-              <th>
-                <button v-on:click.prevent="rollStat" id="roll6">
-                  ROLL DICE
-                </button>
-              </th>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  v-for="num in statGen.rolledNums"
-                  v-bind:key="num.id"
-                  v-bind:class="{
-                    statUsed:
-                      statGen.checkArray.some((n) => n.id == num.id) &&
-                      statGen.checkArray.length > 0 &&
-                      !rollStatCheck.some((m) => m.id == num.id),
-                  }"
-                >
-                  {{ num.roll }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div v-if=" !statGen.isStandardArray"> <!-- Add a v-else here!!! for when stats are not rolled, stan array, or point buy-->
+      <rolled-new-char :newChar="newChar" :statGen="statGen" v-else-if="statGen.isRolled" @rollStat="rollStat"  @updateCheckArray="updateCheckArray" />
+      
+      <div v-else> <!-- Add a v-else here!!! for when stats are not rolled, stan array, or point buy-->
 
-      <p v-if="!statGen.isPointBuy">
+      <p> <!-- loop through stats array here -->
         <label for="strength">Strength: </label>
-        <select
-          name="strength"
-          id=""
-          v-if="statGen.isStandardArray || statGen.isRolled"
-          v-model="newChar.strength"
-          v-on:change="updateCheckArray"
-        >
-          <!-- <option
-            v-for="num in statGen.stanArray"
-            v-bind:key="num"
-            v-bind:value="num"
-            v-show="statGen.isStandardArray"
-          >
-            {{ num }}
-          </option> -->
-          <option
-            v-show="statGen.isRolled"
-            v-for="numObj in statGen.rolledNums"
-            v-bind:key="numObj.id"
-            v-bind:value="numObj"
-          >
-            {{ numObj.id }}. {{ numObj.roll }}
-          </option>
-        </select>
+        
+         
+          
         <input
           type="number"
           name="strength"
           v-model="newChar.strength"
           :disabled="statGen.isPointBuy"
-          v-else
+          
         />
-        <span v-if="statGen.isPointBuy"
-          ><button
-            name="strength"
-            v-on:click.prevent="increaseStat"
-            :disabled="newChar.strength == 15 || statGen.points == 0"
-          >
-            +</button
-          ><button
-            name="strength"
-            v-on:click.prevent="decreaseStat"
-            :disabled="newChar.strength == 8 || statGen.points == 27"
-          >
-            -
-          </button></span
-        >
+                
       </p>
       <p v-if="!statGen.isPointBuy">
         <label for="dexterity">Dexterity: </label>
@@ -493,9 +343,10 @@ import DNDService from "@/services/DnDService";
 import { nameByRace } from "fantasy-name-generator"; // this is a npm i found and installed
 import PointBuyNewChar from "./PointBuyNewChar.vue";
 import StandardArrayNewChar from "./StandardArrayNewChar.vue";
+import RolledNewChar from "./RolledNewChar.vue";
 
 export default {
-  components: { PointBuyNewChar, StandardArrayNewChar },
+  components: { PointBuyNewChar, StandardArrayNewChar, RolledNewChar },
   name: "CharactersView",
   data() {
     return {
@@ -565,9 +416,9 @@ export default {
       let diceRoll = nums[0] + nums[1] + nums[2]; //adds the elements of the array together
       return diceRoll;
     },
-    rollStat(event) {
+    rollStat() {
       let diceRoll = this.diceStatRoll();
-      let id = event.target.id[event.target.id.length - 1];
+      let id = parseInt(event.target.id) + 1; //add one so that the numbers are 1-6, not 0-5
       this.statGen.rolledNums.find((o) => {
         if (o.id == id) {
           o.roll = diceRoll;
@@ -750,11 +601,14 @@ export default {
             
         console.log("check Array Length: ", this.statGen.checkArray.length);
       } else if (this.statGen.isRolled) {
+        let stat = this.newChar.stats.find(s => s.name == event.target.name)
         let i = event.target.options.selectedIndex;
+          stat.value = parseInt(event.target.options[i]._value);
         // console.log(event)
         // console.log(event.target)
         // console.log(event.target.options)
         // console.log(event.target.options[i])
+        // console.log(event.target.options[i]._value)
         // console.log(event.target.options[i]._value)
         if (!this.statGen.checkArray.find((o) => o.id == i)) {
           this.statGen.checkArray.push(event.target.options[i]._value);
@@ -820,22 +674,23 @@ export default {
     rollStatCheck() {
       return this.statGen.rolledNums.filter((num) => {
         //console.log("number here??", num);
-        if (num == this.newChar.strength) {
+          
+        if (num.roll == this.newChar.stats[0].value) {
           return false;
         }
-        if (num == this.newChar.dexterity) {
+        if (num.roll == this.newChar.stats[1].value) {
           return false;
         }
-        if (num == this.newChar.constitution) {
+        if (num.roll == this.newChar.stats[2].value) {
           return false;
         }
-        if (num == this.newChar.intelligence) {
+        if (num.roll == this.newChar.stats[3].value) {
           return false;
         }
-        if (num == this.newChar.wisdom) {
+        if (num.roll == this.newChar.stats[4].value) {
           return false;
         }
-        if (num == this.newChar.charisma) {
+        if (num.roll == this.newChar.stats[5].value) {
           return false;
         }
         return true;
